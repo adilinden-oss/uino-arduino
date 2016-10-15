@@ -14,3 +14,4 @@ This is only for the 1.6.x series of Arduino releases, it will not work with ear
 Friday October 14, 2016
 
   - Added inital cut for \*uino-32u4 based on Leonardo.  Still uses Leonardo port assignments.
+  - Added Caterina bootloader.
