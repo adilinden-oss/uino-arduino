@@ -88,7 +88,7 @@
 #undef OCR2_6
 #undef OCR2_7
 
-#define NUM_DIGITAL_PINS  31
+#define NUM_DIGITAL_PINS  32
 #define NUM_ANALOG_INPUTS 12
 
 #define TX_RX_LED_INIT	DDRD |= (1<<5), DDRB |= (1<<0)
@@ -97,21 +97,21 @@
 #define RXLED0			PORTB |= (1<<0)
 #define RXLED1			PORTB &= ~(1<<0)
 
-#define PIN_WIRE_SDA         (2)
-#define PIN_WIRE_SCL         (3)
+#define PIN_WIRE_SDA         (14)
+#define PIN_WIRE_SCL         (15)
 
 static const uint8_t SDA = PIN_WIRE_SDA;
 static const uint8_t SCL = PIN_WIRE_SCL;
 
-#define LED_BUILTIN 13
-#define LED_BUILTIN_RX 17
+#define LED_BUILTIN 17
+#define LED_BUILTIN_RX 31
 #define LED_BUILTIN_TX 30
 
 // Map SPI port to 'new' pins D14..D17
-#define PIN_SPI_SS    (17)
-#define PIN_SPI_MOSI  (16)
-#define PIN_SPI_MISO  (14)
-#define PIN_SPI_SCK   (15)
+#define PIN_SPI_SS    (31)
+#define PIN_SPI_MOSI  (11)
+#define PIN_SPI_MISO  (12)
+#define PIN_SPI_SCK   (13)
 
 static const uint8_t SS   = PIN_SPI_SS;
 static const uint8_t MOSI = PIN_SPI_MOSI;
@@ -146,24 +146,58 @@ static const uint8_t A9 = PIN_A9;	// D9
 static const uint8_t A10 = PIN_A10;	// D10
 static const uint8_t A11 = PIN_A11;	// D12
 
-#define digitalPinToPCICR(p)    ((((p) >= 8 && (p) <= 11) || ((p) >= 14 && (p) <= 17) || ((p) >= A8 && (p) <= A10)) ? (&PCICR) : ((uint8_t *)0))
-#define digitalPinToPCICRbit(p) 0
-#define digitalPinToPCMSK(p)    ((((p) >= 8 && (p) <= 11) || ((p) >= 14 && (p) <= 17) || ((p) >= A8 && (p) <= A10)) ? (&PCMSK0) : ((uint8_t *)0))
-#define digitalPinToPCMSKbit(p) ( ((p) >= 8 && (p) <= 11) ? (p) - 4 : ((p) == 14 ? 3 : ((p) == 15 ? 1 : ((p) == 16 ? 2 : ((p) == 17 ? 0 : (p - A8 + 4))))))
+#define digitalPinToPCICR(p)     (((p) == 3 || ((p) >= 8 && (p) <= 13) || (p) == 31 || ((p) >= A8 && (p) <= A10)) ? (&PCICR) : ((uint8_t *)0))
+#define digitalPinToPCICRbit(p)  0
+#define digitalPinToPCMSK(p)     (((p) == 3 || ((p) >= 8 && (p) <= 13) || (p) == 31 || ((p) >= A8 && (p) <= A10)) ? (&PCMSK0) : ((uint8_t *)0))
+#define digitalPinToPCMSKbit(p)  ( (p) == 3 ? 7 : (((p) >= 8 && (p) <= 10) ? (p) - 4 : ((p) == 11 ? 2 : ((p) == 12 ? 3 : ((p) == 13 ? 1 : ((p) == 31 ? 0 : (p - A8 + 4)))))))
 
 //	__AVR_ATmega32U4__ has an unusual mapping of pins to channels
 extern const uint8_t PROGMEM analog_pin_to_channel_PGM[];
-#define analogPinToChannel(P)  ( pgm_read_byte( analog_pin_to_channel_PGM + (P) ) )
+#define analogPinToChannel(P)    ( pgm_read_byte( analog_pin_to_channel_PGM + (P) ) )
 
-#define digitalPinHasPWM(p)         ((p) == 3 || (p) == 5 || (p) == 6 || (p) == 9 || (p) == 10 || (p) == 11 || (p) == 13)
+#define digitalPinHasPWM(p)      ((p) == 2 || (p) == 3 || (p) == 5 || (p) == 6 || (p) == 9 || (p) == 10 || (p) == 15)
 
-#define digitalPinToInterrupt(p) ((p) == 0 ? 2 : ((p) == 1 ? 3 : ((p) == 2 ? 1 : ((p) == 3 ? 0 : ((p) == 7 ? 4 : NOT_AN_INTERRUPT)))))
+#define digitalPinToInterrupt(p) ((p) == 0 ? 2 : ((p) == 1 ? 3 : ((p) == 7 ? 4 : ((p) == 14 ? 1 : ((p) == 15 ? 0 : NOT_AN_INTERRUPT)))))
 
 #ifdef ARDUINO_MAIN
 
 // On the Arduino board, digital pins are also used
 // for the analog output (software PWM).  Analog input
 // pins are a separate set.
+
+// ATMEL ATMEGA32U4 / *uino-32u4
+//
+// D0				PD2					RXD1/INT2
+// D1				PD3					TXD1/INT3
+// D2#				PC7		PWM10		CLK0/OC4A
+// D3#				PB7		PWM8/16		0C0A/OC1C/#RTS/PCINT7
+// D4		A6		PD4					ADC8
+// D5#				PC6		???			OC3A/#OC4A
+// D6#		A7		PD7		FastPWM		#OC4D/ADC10
+// D7				PE6					INT6/AIN0
+//
+// D8		A8		PB4					ADC11/PCINT4
+// D9#		A9		PB5		PWM16		OC1A/#OC4B/ADC12/PCINT5
+// D10#		A10		PB6		PWM16		OC1B/0c4B/ADC13/PCINT6
+// D11		MOSI	PB2					MOSI,PCINT2
+// D12		MISO	PB3					MISO,PCINT3
+// D13		SCK		PB1					SCK,PCINT1
+//
+// A0		D18		PF7					ADC7
+// A1		D19		PF6					ADC6
+// A2		D20 	PF5					ADC5
+// A3		D21 	PF4					ADC4
+// A4		D22		PF1					ADC1
+// A5		D23 	PF0					ADC0
+//
+// D14				PD1		SDA			SDA/INT1
+// D15#				PD0		PWM8/SCL	OC0B/SCL/INT0
+//
+// D16		LED L1	PE2					HWB
+// D17		LED L2	PD6					T1/#OC4D/ADC9
+//
+// TXLED	D30		PD5					XCK1
+// RXLED	D31	    PB0
 
 // ATMEL ATMEGA32U4 / ARDUINO LEONARDO
 //
@@ -237,8 +271,8 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PD, // D0 - PD2
 	PD,	// D1 - PD3
-	PD, // D2 - PD1
-	PD,	// D3 - PD0
+	PC, // D2 - PC7
+	PB,	// D3 - PB7
 	PD,	// D4 - PD4
 	PC, // D5 - PC6
 	PD, // D6 - PD7
@@ -247,14 +281,14 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PB, // D8 - PB4
 	PB,	// D9 - PB5
 	PB, // D10 - PB6
-	PB,	// D11 - PB7
-	PD, // D12 - PD6
-	PC, // D13 - PC7
+	PB,	// D11 - MOSI - PB2
+	PB, // D12 - MISO - PB3
+	PB, // D13 - SCK - PB1
 	
-	PB,	// D14 - MISO - PB3
-	PB,	// D15 - SCK - PB1
-	PB,	// D16 - MOSI - PB2
-	PB,	// D17 - SS - PB0
+	PD,	// D14 - SDA - PD1
+	PD,	// D15 - SCL - PD0
+	PE,	// D16 - LED1 - HWB - PE2
+	PD,	// D17 - LED2 - PD6
 	
 	PF,	// D18 - A0 - PF7
 	PF, // D19 - A1 - PF6
@@ -268,66 +302,74 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PB, // D26 / D8 - A8 - PB4
 	PB, // D27 / D9 - A9 - PB5
 	PB, // D28 / D10 - A10 - PB6
-	PD, // D29 / D12 - A11 - PD6
+	PD, // D29 / D17 - A11 - PD6
+
 	PD, // D30 / TX Led - PD5
+	PB, // D31 / RX Led - PB0
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
-	_BV(2), // D0 - PD2
+	_BV(2),	// D0 - PD2
 	_BV(3),	// D1 - PD3
-	_BV(1), // D2 - PD1
-	_BV(0),	// D3 - PD0
+	_BV(7),	// D2 - PC7
+	_BV(7),	// D3 - PB7
 	_BV(4),	// D4 - PD4
-	_BV(6), // D5 - PC6
-	_BV(7), // D6 - PD7
-	_BV(6), // D7 - PE6
-	
-	_BV(4), // D8 - PB4
+	_BV(6),	// D5 - PC6
+	_BV(7),	// D6 - PD7
+	_BV(6),	// D7 - PE6
+
+	_BV(4),	// D8 - PB4
 	_BV(5),	// D9 - PB5
-	_BV(6), // D10 - PB6
-	_BV(7),	// D11 - PB7
-	_BV(6), // D12 - PD6
-	_BV(7), // D13 - PC7
-	
-	_BV(3),	// D14 - MISO - PB3
-	_BV(1),	// D15 - SCK - PB1
-	_BV(2),	// D16 - MOSI - PB2
-	_BV(0),	// D17 - SS - PB0
-	
+	_BV(6),	// D10 - PB6
+	_BV(2),	// D11 - MOSI - PB2
+	_BV(3),	// D12 - MISO - PB3
+	_BV(1),	// D13 - SCK - PB1
+
+	_BV(1),	// D14 - SDA - PD1
+	_BV(0),	// D15 - SCL - PD0
+	_BV(2),	// D16 - LED1 - HWB - PE2
+	_BV(6),	// D17 - LED2 - PD6
+
 	_BV(7),	// D18 - A0 - PF7
-	_BV(6), // D19 - A1 - PF6
-	_BV(5), // D20 - A2 - PF5
-	_BV(4), // D21 - A3 - PF4
-	_BV(1), // D22 - A4 - PF1
-	_BV(0), // D23 - A5 - PF0
-	
-	_BV(4), // D24 / D4 - A6 - PD4
-	_BV(7), // D25 / D6 - A7 - PD7
-	_BV(4), // D26 / D8 - A8 - PB4
-	_BV(5), // D27 / D9 - A9 - PB5
-	_BV(6), // D28 / D10 - A10 - PB6
-	_BV(6), // D29 / D12 - A11 - PD6
-	_BV(5), // D30 / TX Led - PD5
+	_BV(6),	// D19 - A1 - PF6
+	_BV(5),	// D20 - A2 - PF5
+	_BV(4),	// D21 - A3 - PF4
+	_BV(1),	// D22 - A4 - PF1
+	_BV(0),	// D23 - A5 - PF0
+
+	_BV(4),	// D24 / D4 - A6 - PD4
+	_BV(7),	// D25 / D6 - A7 - PD7
+	_BV(4),	// D26 / D8 - A8 - PB4
+	_BV(5),	// D27 / D9 - A9 - PB5
+	_BV(6),	// D28 / D10 - A10 - PB6
+	_BV(6),	// D29 / D17 - A11 - PD6
+
+	_BV(5),	// D30 / TX Led - PD5
+	_BV(0),	// D31 / RX Led - PB0
 };
 
 const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	NOT_ON_TIMER,	
 	NOT_ON_TIMER,
-	NOT_ON_TIMER,
-	TIMER0B,		/* 3 */
+	TIMER4A,		/* 2 */
+	TIMER0A,		/* 3 */
 	NOT_ON_TIMER,
 	TIMER3A,		/* 5 */
 	TIMER4D,		/* 6 */
-	NOT_ON_TIMER,	
-	
-	NOT_ON_TIMER,	
+	NOT_ON_TIMER,
+
+	NOT_ON_TIMER,
 	TIMER1A,		/* 9 */
 	TIMER1B,		/* 10 */
-	TIMER0A,		/* 11 */
-	
 	NOT_ON_TIMER,	
-	TIMER4A,		/* 13 */
-	
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+
+	NOT_ON_TIMER,	
+	TIMER0B,		/* 15 */
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+
 	NOT_ON_TIMER,	
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
@@ -341,9 +383,7 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
-	NOT_ON_TIMER,
-	NOT_ON_TIMER,
-	NOT_ON_TIMER,
+
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
 };
@@ -360,7 +400,7 @@ const uint8_t PROGMEM analog_pin_to_channel_PGM[] = {
 	11,	// A8		D8		PB4					ADC11
 	12,	// A9		D9		PB5					ADC12
 	13,	// A10		D10		PB6					ADC13
-	9	// A11		D12		PD6					ADC9
+	9	// A11		D17		PD6					ADC9
 };
 
 #endif /* ARDUINO_MAIN */
