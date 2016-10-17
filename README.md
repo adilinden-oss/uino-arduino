@@ -11,6 +11,16 @@ This is only for the 1.6.x series of Arduino releases, it will not work with ear
 
 ###Changes
 
+Sunday October 16, 2016
+
+- Added support for *uino-1284p.
+- Loaded sketch to blink on-board LEDs successfully.
+- Noticed that Arduino IDE 1.6.12 already includes support for ATmega1284P in Servo library.
+
+Saturday October 15, 2016
+
+- Added pin mappings for *uino-1284p.
+
 Friday October 14, 2016
 
-  - Added inital cut for \*uino-32u4 based on Leonardo.  Still uses Leonardo port assignments.
+- Added inital cut for \*uino-32u4 based on Leonardo.  Still uses Leonardo port assignments.
