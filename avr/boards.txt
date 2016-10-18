@@ -44,7 +44,7 @@ uino1284p.upload.tool=arduino:avrdude
 uino1284p.upload.protocol=arduino
 uino1284p.upload.maximum_size=130048
 uino1284p.upload.maximum_data_size=16384
-uino1284p.upload.speed=57600
+uino1284p.upload.speed=115200
 
 uino1284p.bootloader.tool=arduino:avrdude
 uino1284p.bootloader.low_fuses=0xf7
