@@ -1,3 +1,21 @@
+## Optiboot for \*uino-1284p
+
+This directory contains the Optiboot bootloader from [https://github.com/adilinden/optiboot]. This is a slightly modified version of [https://github.com/Optiboot/optiboot] with the \*uino-1284p target added.  Some minor Makefile modifications were made to easily specify the TOOLROOT (where Arduino IDE keeps its tools) on command line.
+
+### Burn the bootloader
+
+I was able to successfully built and burn the bootloader to the \*uino-1284p board using the Atmel AVRISP MKII.  The particular Arduino IDE version was 1.6.12 on 64 bit Ubuntu 16.04.
+
+### Build the bootloader
+
+Make sure the Arduino IDE is installed.  Mine is located in `$HOME/Apps/arduino`.
+
+```
+ make TOOLROOT=$HOME/Apps/arduino/hardware/tools uino-1284p
+```
+
+### README.TXT
+
 This directory contains the Optiboot small bootloader for AVR
 microcontrollers, somewhat modified specifically for the Arduino
 environment.
