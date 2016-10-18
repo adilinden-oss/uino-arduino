@@ -58,21 +58,52 @@
 # To rebuild project do "make clean" then "make all".
 #----------------------------------------------------------------------------
 
+#------------------ On VID and PID ------------------
+#
+# Note on USB Vendor IDs (VID) and Product IDs (PID): The arduino-usbdfu
+# project uses Atmel's VID and MCU-specific PIDs to maintain compatibility
+# with their FLIP software.  The source code to the arduino-usbserial
+# project includes Atmel's VID and a PID donated by them to LUFA.  This
+# PID is used in LUFA's USBtoSerial project, which forms the basis for
+# arduino-usbserial.  According to the LUFA documentation, this VID/PID
+# combination is:
+#  
+#  "For use in testing of LUFA powered devices during development only,
+#  by non-commercial entities. All devices must accept collisions on this
+#  VID/PID range (from other in-development LUFA devices) to be resolved
+#  by using a unique release number in the Device Descriptor. No devices
+#  using this VID/PID combination may be released to the general public."
+#  
+# The production version of the arduino-usbserial firmware uses the
+# Arduino VID.  This is only for use with official Arduino hardware and
+# should not be used on other products.
+#
+
+# Specify the Arduino model using the assigned PID.  This is used by Descriptors.c
+# to set PID and product descriptor string
+#
+# USB vendor ID (VID)
+# reuse of this VID by others is forbidden by USB-IF
+# official Arduino LLC VID
+# VID = 0x2341
+VID ?= 0x1209
+
+# USB product ID (PID)
+# official Uno PID
+# PID = 0x0001
+# official Mega 2560 PID
+# PID = 0x0010
+PID ?= 0x414d
+
+
+#--------------------- Defaults ---------------------
 # MCU name(s)
 # 	Since the ATMEGA8U2 part is not directly supported by the current
 #	versions of either avrdude or dfu-programmer, we specify a dummy
 #	part; AT90USB82 which is close enough in memory size and organization
 MCU = atmega8u2
-MCU_AVRDUDE = at90usb82
-MCU_DFU = at90usb82
-
-# Specify the Arduino model using the assigned PID.  This is used by Descriptors.c
-#   to set PID and product descriptor string
-# Uno PID:
-ARDUINO_MODEL_PID = 0x0001
-# Mega 2560 PID:
-#ARDUINO_MODEL_PID = 0x0010
-
+MCU_AVRDUDE = atmega8u2
+MCU_DFU = atmega8u2
 
 # Target board (see library "Board Types" documentation, NONE for projects not requiring
 # LUFA board drivers). If USER is selected, put custom board drivers in a directory called 
@@ -121,9 +152,9 @@ TARGET = Arduino-usbserial
 #     this an empty or blank macro!
 OBJDIR = .
 
-
+#------------------- LUFA Options -------------------
 # Path to the LUFA library
-LUFA_PATH = ../..
+LUFA_PATH = ./lufa
 
 
 # LUFA library compile-time options
@@ -139,7 +170,7 @@ LUFA_OPTS += -D USE_STATIC_OPTIONS="(USB_DEVICE_OPT_FULLSPEED | USB_OPT_REG_ENAB
 # Create the LUFA source path variables by including the LUFA root makefile
 include $(LUFA_PATH)/LUFA/makefile
 
-
+#------------------- Build Options -------------------
 # List C source files here. (C dependencies are automatically generated.)
 SRC = $(TARGET).c                                                 \
 	  Descriptors.c                                               \
@@ -205,7 +236,8 @@ CSTANDARD = -std=gnu99
 # Place -D or -U options here for C sources
 CDEFS  = -DF_CPU=$(F_CPU)UL 
 CDEFS += -DF_CLOCK=$(F_CLOCK)UL 
-CDEFS += -DARDUINO_MODEL_PID=$(ARDUINO_MODEL_PID)
+CDEFS += -DDEVICE_PID=$(PID)
+CDEFS += -DDEVICE_VID=$(VID)
 CDEFS += -DBOARD=BOARD_$(BOARD) 
 CDEFS += $(LUFA_OPTS)
 CDEFS += -DAVR_RESET_LINE_PORT="PORTD"
@@ -433,16 +465,24 @@ DEBUG_HOST = localhost
 
 #============================================================================
 
+# Perhaps we have TOOLROOT defined as make option on command line
+ifdef TOOLROOT
+GCCROOT = $(TOOLROOT)/avr/bin/
+AVRDUDE_CONF = -C$(TOOLROOT)/avr/etc/avrdude.conf
+else
+GCCROOT =
+AVRDUDE_CONF =
+endif
 
 # Define programs and commands.
 SHELL = sh
-CC = avr-gcc
-OBJCOPY = avr-objcopy
-OBJDUMP = avr-objdump
-SIZE = avr-size
-AR = avr-ar rcs
-NM = avr-nm
-AVRDUDE = avrdude
+CC = $(GCCROOT)avr-gcc
+OBJCOPY = $(GCCROOT)avr-objcopy
+OBJDUMP = $(GCCROOT)avr-objdump
+SIZE = $(GCCROOT)avr-size
+AR = $(GCCROOT)avr-ar rcs
+NM = $(GCCROOT)avr-nm
+AVRDUDE = $(GCCROOT)avrdude
 REMOVE = rm -f
 REMOVEDIR = rm -rf
 COPY = cp
@@ -573,7 +613,7 @@ gccversion :
 
 # Program the device.  
 program: $(TARGET).hex $(TARGET).eep
-	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
+	$(AVRDUDE) $(AVRDUDE_CONF) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
 
 flip: $(TARGET).hex
 	batchisp -hardware usb -device $(MCU_DFU) -operation erase f

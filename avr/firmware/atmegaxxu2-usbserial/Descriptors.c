@@ -197,15 +197,22 @@ const USB_Descriptor_String_t PROGMEM LanguageString =
 	.UnicodeString          = {LANGUAGE_ID_ENG}
 };
 
+
 /** Manufacturer descriptor string. This is a Unicode string containing the manufacturer's details in human readable
  *  form, and is read out upon request by the host when the appropriate string ID is requested, listed in the Device
  *  Descriptor.
  */
 const USB_Descriptor_String_t PROGMEM ManufacturerString =
 {
-	.Header                 = {.Size = USB_STRING_LEN(24), .Type = DTYPE_String},
-		
-	.UnicodeString          = L"Arduino (www.arduino.cc)"
+	.Header					= {.Size = USB_STRING_LEN(11), .Type = DTYPE_String},
+	
+	#if DEVICE_VID == 0x2341
+	.UnicodeString			= L"Arduino LLC"
+	#elif DEVICE_VID == 0x1209
+	.UnicodeString			= L"Adi Linden "
+	#else
+	.UnicodeString			= L"Unknown    "
+	#endif
 };
 
 /** Product descriptor string. This is a Unicode string containing the product's details in human readable form,
@@ -214,16 +221,17 @@ const USB_Descriptor_String_t PROGMEM ManufacturerString =
  */
 const USB_Descriptor_String_t PROGMEM ProductString =
 {
-	#if (ARDUINO_MODEL_PID == ARDUINO_UNO_PID)
-		.Header                 = {.Size = USB_STRING_LEN(11), .Type = DTYPE_String},
-			
-		.UnicodeString          = L"Arduino Uno"
-	#elif (ARDUINO_MODEL_PID == ARDUINO_MEGA2560_PID)
-		.Header                 = {.Size = USB_STRING_LEN(17), .Type = DTYPE_String},
-			
-		.UnicodeString          = L"Arduino Mega 2560"
+	.Header                 = {.Size = USB_STRING_LEN(16), .Type = DTYPE_String},
+
+	#if DEVICE_PID == 0x0001
+	.UnicodeString          = L"Arduino UNO      " 
+	#elif DEVICE_PID == 0x0010
+	.UnicodeString			= L"Arduino Mega 2560"
+	#elif DEVICE_PID == 0x414d 
+	.UnicodeString			= L"*uino-1284p      "
+	#else
+	.UnicodeString			= L"USB IO board     "
 	#endif
-	
 };
 
 /** This function is called by the library when in device mode, and must be overridden (see library "USB Descriptors"
