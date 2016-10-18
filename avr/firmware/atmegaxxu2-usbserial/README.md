@@ -2,7 +2,16 @@
 
 This is the arduino-usbserial firmware modified for the \*uino-1282p. It was taken from the Arduino IDE 1.6.12.
 
-###Burn the usbserial chip using command line
+###Burn using the Arduino IDE
+
+The `boards.txt` file contains a definition to upload the USB serial bridge firmware using the built-in bootloader burner of the Arduino IDE.  To burn the firmware connect the programmer of your choice and select it in the "Tools" menu.
+
+1. Under "Tools > Boards" select:
+    * *uino-1284p - ATmega8U2 Burn Firmware
+2. Select "Tools > Burn Bootloader"
+3. Success! 
+
+###Burn using command line
 
 I was able to successfully built and burn the usbserial code to the *uino-1284p board using the Atmel AVRISP MKII. The particular Arduino IDE version was 1.6.12 on 64 bit Ubuntu 16.04. The USB to serial chip is the ATmega8U2 running at 16MHz. 
 

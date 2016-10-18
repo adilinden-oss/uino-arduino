@@ -61,3 +61,21 @@ uino1284p.build.core=arduino:arduino
 uino1284p.build.variant=uino1284p
 
 ##############################################################
+
+uino1284pfw.name=*uino-1284p - ATmega8U2 Burn Firmware
+
+uino1284pfw.bootloader.tool=arduino:avrdude
+uino1284pfw.bootloader.low_fuses=0xff
+uino1284pfw.bootloader.high_fuses=0xd9
+uino1284pfw.bootloader.extended_fuses=0xf4
+uino1284pfw.bootloader.file=../firmware/atmegaxxu2-usbserial/uino-1284p-usbserial-atmega8u2-20.hex
+uino1284pfw.bootloader.unlock_bits=0x3F
+uino1284pfw.bootloader.lock_bits=0x0F
+
+uino1284pfw.build.mcu=atmega8u2
+uino1284pfw.build.f_cpu=16000000L
+uino1284pfw.build.board=uno.build.board=AVR_UINO1284P
+uino1284pfw.build.core=arduino:arduino
+uino1284pfw.build.variant=standard
+
+##############################################################
