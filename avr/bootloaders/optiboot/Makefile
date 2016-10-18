@@ -109,8 +109,14 @@ GCCROOT = $(TOOLROOT)/avr/bin/
 AVRDUDE_CONF = -C$(TOOLROOT)/avr/etc/avrdude.conf
 
 else
+# Perhaps we have TOOLROOT defined as make option on command line
+ifdef TOOLROOT
+GCCROOT = $(TOOLROOT)/avr/bin/
+AVRDUDE_CONF = -C$(TOOLROOT)/avr/etc/avrdude.conf
+else
 GCCROOT =
 AVRDUDE_CONF =
+endif
 endif
 
 STK500 = "C:\Program Files\Atmel\AVR Tools\STK500\Stk500.exe"
