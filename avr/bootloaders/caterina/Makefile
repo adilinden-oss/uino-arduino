@@ -430,16 +430,24 @@ DEBUG_HOST = localhost
 
 #============================================================================
 
+# Perhaps we have TOOLROOT defined as make option on command line
+ifdef TOOLROOT
+GCCROOT = $(TOOLROOT)/avr/bin/
+AVRDUDE_CONF = -C$(TOOLROOT)/avr/etc/avrdude.conf
+else
+GCCROOT =
+AVRDUDE_CONF =
+endif
 
 # Define programs and commands.
 SHELL = sh
-CC = avr-gcc
-OBJCOPY = avr-objcopy
-OBJDUMP = avr-objdump
-SIZE = avr-size
-AR = avr-ar rcs
-NM = avr-nm
-AVRDUDE = /Applications/avrdude -C /Applications/avrdude.conf -B 1
+CC = $(GCCROOT)avr-gcc
+OBJCOPY = $(GCCROOT)avr-objcopy
+OBJDUMP = $(GCCROOT)avr-objdump
+SIZE = $(GCCROOT)avr-size
+AR = $(GCCROOT)avr-ar rcs
+NM = $(GCCROOT)avr-nm
+AVRDUDE = $(GCCROOT)avrdude $(AVRDUDE_CONF) -B 1
 REMOVE = rm -f
 REMOVEDIR = rm -rf
 COPY = cp
