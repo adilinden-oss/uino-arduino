@@ -16,5 +16,9 @@ Modify the 'build.sh' and add a new section for the new board matching the PID a
 
 ###Build
 
-Execute `./build.sh` which will build new files for each board.  Before commiting to git make sure to run `make clean`.  
+Execute `make` which will build new files for each board.  Before commiting to git make sure to run `make clean`.  `make` takes optional arguments.  If TOOLROOT is not specified then any avr-gcc tools in path will be used.  Using TOOLROOT it is possible to explicitly specifiy Arduino IDE build tools.  The USB VID and PID can also be specified on command line.  Example:
+
+```
+make TOOLROOT=$HOME/Apps/arduino/hardware/tools VID=0x1209 PID=0x414c
+```
 
