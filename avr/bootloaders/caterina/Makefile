@@ -51,6 +51,8 @@
 # official Arduino LLC VID
 # VID = 0x2341
 
+# official *uino-32u4 VID
+VID ?= 0x1209
 
 # USB product ID (PID)
 # official Leonardo PID
@@ -59,6 +61,9 @@
 # PID = 0x0037
 # official Esplora PID
 # PID = 0x003C
+
+# official *uino-32u4 PID
+PID ?= 0x414c
 
 # MCU name
 MCU = atmega32u4
