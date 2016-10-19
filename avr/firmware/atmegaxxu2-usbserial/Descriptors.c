@@ -65,9 +65,10 @@ const USB_Descriptor_Device_t PROGMEM DeviceDescriptor =
 				
 	.Endpoint0Size          = FIXED_CONTROL_ENDPOINT_SIZE,
 		
-	.VendorID               = 0x03EB, // Atmel
-
-	.ProductID          	= 0x204B, // LUFA USB to Serial Demo Application
+//	.VendorID               = 0x03EB, // Atmel
+//	.ProductID          	= 0x204B, // LUFA USB to Serial Demo Application
+	.VendorID               = DEVICE_VID,
+	.ProductID          	= DEVICE_PID,
 	.ReleaseNumber          = 0x0001,
 		
 	.ManufacturerStrIndex   = 0x01,
