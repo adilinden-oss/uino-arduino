@@ -51,6 +51,8 @@
 # official Arduino LLC VID
 # VID = 0x2341
 
+# official *uino-32u4 VID
+VID ?= 0x1209
 
 # USB product ID (PID)
 # official Leonardo PID
@@ -59,6 +61,9 @@
 # PID = 0x0037
 # official Esplora PID
 # PID = 0x003C
+
+# official *uino-32u4 PID
+PID ?= 0x414c
 
 # MCU name
 MCU = atmega32u4
@@ -127,7 +132,7 @@ OBJDIR = .
 
 
 # Path to the LUFA library
-LUFA_PATH = ../../../../../../LUFA/LUFA-111009
+LUFA_PATH = ./lufa
 
 
 # LUFA library compile-time options and predefined tokens
@@ -430,16 +435,24 @@ DEBUG_HOST = localhost
 
 #============================================================================
 
+# Perhaps we have TOOLROOT defined as make option on command line
+ifdef TOOLROOT
+GCCROOT = $(TOOLROOT)/avr/bin/
+AVRDUDE_CONF = -C$(TOOLROOT)/avr/etc/avrdude.conf
+else
+GCCROOT =
+AVRDUDE_CONF =
+endif
 
 # Define programs and commands.
 SHELL = sh
-CC = avr-gcc
-OBJCOPY = avr-objcopy
-OBJDUMP = avr-objdump
-SIZE = avr-size
-AR = avr-ar rcs
-NM = avr-nm
-AVRDUDE = /Applications/avrdude -C /Applications/avrdude.conf -B 1
+CC = $(GCCROOT)avr-gcc
+OBJCOPY = $(GCCROOT)avr-objcopy
+OBJDUMP = $(GCCROOT)avr-objdump
+SIZE = $(GCCROOT)avr-size
+AR = $(GCCROOT)avr-ar rcs
+NM = $(GCCROOT)avr-nm
+AVRDUDE = $(GCCROOT)avrdude $(AVRDUDE_CONF) -B 1
 REMOVE = rm -f
 REMOVEDIR = rm -rf
 COPY = cp

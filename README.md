@@ -4,7 +4,7 @@ These are the support files for the \*uino boards. This is only for the 1.6.x se
 
 ##Install
 
-Checkout the repository into the Sketchbook hardware folder.  The *uino boards supported will now be listed in the Arduino IDE "Boards" menu.
+Checkout the repository into the Sketchbook hardware folder.  The \*uino boards supported will now be listed in the Arduino IDE "Boards" menu.
 
 ##Prepare Board
 
@@ -31,14 +31,14 @@ Connect the programmer to the programming header of the ATmega1284p.  With the A
 Connect the programmer to the programming header of the ATmega8U2.  With the AVRISP MKII the board also needs external power. From within the Arduino IDE
 
 1. Under "Tools > Boards" select:
-    * *uino-1284p - ATmega8U2 Burn Firmware
+    * \*uino-1284p - ATmega8U2 Burn Firmware
 2. Select "Tools > Burn Bootloader"
 3. Success! 
 
 ##References
 
-  o [Arduino IDE 1.5 3rd party Hardware specification](https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification)
-  o [Arduino Hardware Cores migration guide from 1.0 to 1.6](https://github.com/arduino/Arduino/wiki/Arduino-Hardware-Cores-migration-guide-from-1.0-to-1.6)
+- [Arduino IDE 1.5 3rd party Hardware specification](https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification)
+- [Arduino Hardware Cores migration guide from 1.0 to 1.6](https://github.com/arduino/Arduino/wiki/Arduino-Hardware-Cores-migration-guide-from-1.0-to-1.6)
 
 ##Changes
 
@@ -49,14 +49,18 @@ Monday October 17, 2016
 
 Sunday October 16, 2016
 
-- Added support for *uino-1284p.
+- Added support for \*uino-1284p.
 - Loaded sketch to blink on-board LEDs successfully.
 - Noticed that Arduino IDE 1.6.12 already includes support for ATmega1284P in Servo library.
 
 Saturday October 15, 2016
 
-- Added pin mappings for *uino-1284p.
+- Now have proper pin mappings for *uino-32u4.
+- Loaded real board with bootloader successfully.
+- Loaded sketch to blink on-board LEDs successfully.
 
 Friday October 14, 2016
 
 - Added inital cut for \*uino-32u4 based on Leonardo.  Still uses Leonardo port assignments.
+- Added Caterina bootloader.
+
