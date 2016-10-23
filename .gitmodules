@@ -1,0 +1,3 @@
+[submodule "avr/bootloaders/caterina/lufa"]
+	path = avr/bootloaders/caterina/lufa
+	url = git@github.com:adilinden/lufa.git
