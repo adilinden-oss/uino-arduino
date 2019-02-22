@@ -1,0 +1,41 @@
+{
+  "packages": [
+    {
+      "name": "UinoCore",
+      "maintainer": "Adi Linden",
+      "websiteURL": "https://github.com/adilinden-oss/uino-arduino/",
+      "email": "adi@adis.ca",
+      "help": {
+        "online": "https://github.com/adilinden-oss/uino-arduino/issues"
+      },
+      "platforms": [
+        {
+          "name": "UinoCore",
+          "architecture": "avr",
+          "version": "1.0.0",
+          "category": "Contributed",
+          "url": "https://github.com/adilinden-oss/uino-arduino/releases/download/v1.0.0/UinoCore-1.0.0.zip",
+          "archiveFileName": "UinoCore-1.0.0.zip",
+          "checksum": "SHA-256:cd13d3435e7fe9b5b54497ec415f332cd243aee34a7260fc3562b36ba8fef34f",
+          "size": "8023938",
+          "boards": [
+            {"name": "uino1284p"},
+            {"name": "uino32u4"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "4.8.1-arduino5"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.0.1-arduino5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
