@@ -1,16 +1,20 @@
-#\*uino Arduino Support
+# \*uino Arduino Support
 
 These are the support files for the \*uino boards. This is only for the 1.6.x series of Arduino releases, it will not work with earlier releases.
 
-##Install
+## Install
 
-Checkout the repository into the Sketchbook hardware folder.  The \*uino boards supported will now be listed in the Arduino IDE "Boards" menu.
+To use this add-on simple add this URL to the Arduino IDE board manager:
 
-##Prepare Board
+	https://raw.githubusercontent.com/adilinden-oss/uino-arduino/master/package_adilinden_uino_index.json
+
+For further details on how to accomplish this please review the "How to install a third party core" section on the official [Installing additional cores](https://www.arduino.cc/en/guide/cores) page.
+
+## Prepare Board
 
 All of the firmware and bootloaders required for the \*uino boards are present.  To install the bootloader in the ATmega1284p or the ATmega32U4 connect a programmer of your choice, such as the AVRISP MKII and follow these steps.
 
-###\*uino-32u4
+### \*uino-32u4
 
 Connect the programmer to the programming header of the ATmega32U4. With the AVRISP MKII the board also needs external power (USB). From within the Arduino IDE
 
@@ -19,7 +23,7 @@ Connect the programmer to the programming header of the ATmega32U4. With the AVR
 2. Select "Tools > Burn Bootloader"
 3. Success! 
 
-###\*uino-1284p
+### \*uino-1284p
 
 Connect the programmer to the programming header of the ATmega1284p.  With the AVRISP MKII the board also needs external power. From within the Arduino IDE
 
@@ -35,12 +39,12 @@ Connect the programmer to the programming header of the ATmega8U2.  With the AVR
 2. Select "Tools > Burn Bootloader"
 3. Success! 
 
-##References
+## References
 
 - [Arduino IDE 1.5 3rd party Hardware specification](https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification)
 - [Arduino Hardware Cores migration guide from 1.0 to 1.6](https://github.com/arduino/Arduino/wiki/Arduino-Hardware-Cores-migration-guide-from-1.0-to-1.6)
 
-##Changes
+## Changes
 
 Monday October 17, 2016
 
