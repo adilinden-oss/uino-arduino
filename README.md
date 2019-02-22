@@ -1,5 +1,7 @@
 # \*uino Arduino Support
 
+[![Build Status](https://travis-ci.org/adilinden-oss/uino-arduino.svg?branch=master)](https://travis-ci.org/adilinden-oss/uino-arduino)
+
 These are the support files for the \*uino boards. This is only for the 1.6.x series of Arduino releases, it will not work with earlier releases.
 
 ## Install
