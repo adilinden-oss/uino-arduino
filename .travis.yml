@@ -1,0 +1,16 @@
+language: c
+
+sudo: false
+
+before_install:
+    - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
+
+install:
+    - arduino --pref "boardsmanager.additional.urls=https://raw.githubusercontent.com/adilinden-oss/uino-arduino/master/package_adilinden_uino_index.json" --save-prefs
+    - arduino --install-boards UinoCore:avr
+    - export BLINK=$(find $HOME/arduino_ide -type f -name 'Blink.ino' -print -quit)
+    - echo "Compiling \"$BLINK\""
+
+script:
+    - arduino --verify --board UinoCore:avr:uino1284p $BLINK
+    - arduino --verify --board UinoCore:avr:uino32u4 $BLINK
