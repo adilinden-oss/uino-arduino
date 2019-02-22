@@ -1,7 +1,7 @@
 [submodule "avr/firmware/atmegaxxu2-usbserial/lufa"]
 	path = avr/firmware/atmegaxxu2-usbserial/lufa
-	url = git@github.com:adilinden/lufa.git
+	url = https://github.com/adilinden-oss/lufa.git
 
 [submodule "avr/bootloaders/caterina/lufa"]
 	path = avr/bootloaders/caterina/lufa
-	url = git@github.com:adilinden/lufa.git
+	url = https://github.com/adilinden-oss/lufa.git
